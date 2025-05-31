@@ -143,7 +143,7 @@ function initializeGame() {
 
     selectionArea.style.display = 'none'; // Hide selection area
     quizArea.style.display = 'block';     // Show quiz area
-    questionArea.style.display = 'flex';  // Show question area
+    questionArea.style.display = 'flex';  // Show question area (This was the fix!)
 }
 
 // Function to display the next question
@@ -182,7 +182,6 @@ function displayQuestion(q) {
     if (q.category === 'conjugation') {
         if (q.subType === 'form_from_info') {
             // Type 1: Given info, ask for form
-            // Removed "فعل" and asterisks
             questionText.innerHTML = `نوع ${q.questionData.type}، ضمیر ${q.questionData.pronoun} را صرف کنید:`;
             correctAnswer = q.questionData.form;
             
