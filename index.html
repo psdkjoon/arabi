@@ -35,6 +35,56 @@
             margin-bottom: 25px;
         }
 
+        .section-title {
+            color: #FFD700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .options-selection {
+            background-color: #3a3a3a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .options-selection label {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            cursor: pointer;
+            user-select: none; /* جلوگیری از انتخاب متن */
+        }
+
+        .options-selection input[type="checkbox"] {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            accent-color: #4CAF50; /* رنگ چک باکس */
+            cursor: pointer;
+        }
+
+        .start-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            background-color: #007bb5;
+        }
+
         .progress-bar-container {
             margin-bottom: 25px;
             text-align: right;
@@ -68,7 +118,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
             min-height: 180px; /* حداقل ارتفاع برای سوالات */
-            display: flex;
+            display: none; /* در ابتدا مخفی است */
             flex-direction: column;
             justify-content: space-between;
         }
@@ -190,25 +240,47 @@
 <body>
     <div class="container">
         <h1>تمرین صرف فعل عربی</h1>
-        <div class="progress-bar-container">
-            <div class="progress-bar-label">پیشرفت: <span id="progress-text">0/0</span></div>
-            <div class="progress-bar">
-                <div id="progress-fill" class="progress-fill"></div>
+
+        <div id="selection-area">
+            <h2 class="section-title">نوع سوالات را انتخاب کنید:</h2>
+            <div class="options-selection">
+                <label>
+                    <input type="checkbox" id="check-mazy" checked> ماضی
+                </label>
+                <label>
+                    <input type="checkbox" id="check-mozare" checked> مضارع
+                </label>
+                <label>
+                    <input type="checkbox" id="check-amr" checked> امر
+                </label>
+                <label>
+                    <input type="checkbox" id="check-pronoun" checked> ضمیر
+                </label>
             </div>
+            <button id="start-quiz-button" class="start-button">شروع آزمون</button>
         </div>
 
-        <div id="question-area" class="question-area">
-            <p id="question-text" class="question-text"></p>
-            <div id="answer-options" class="answer-options">
+        <div id="quiz-area" style="display: none;">
+            <div class="progress-bar-container">
+                <div class="progress-bar-label">پیشرفت: <span id="progress-text">0/0</span></div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
                 </div>
-            <button id="check-button" class="button">بررسی</button>
-            <button id="next-button" class="button next-button">سوال بعدی</button>
-        </div>
-        
-        <div id="feedback-area" class="feedback-area">
             </div>
 
-        <button id="restart-button" class="button restart-button">شروع مجدد</button>
+            <div id="question-area" class="question-area">
+                <p id="question-text" class="question-text"></p>
+                <div id="answer-options" class="answer-options">
+                    </div>
+                <button id="check-button" class="button">بررسی</button>
+                <button id="next-button" class="button next-button">سوال بعدی</button>
+            </div>
+            
+            <div id="feedback-area" class="feedback-area">
+                </div>
+
+            <button id="restart-button" class="button restart-button">شروع مجدد</button>
+        </div>
     </div>
 
     <script>
@@ -243,7 +315,7 @@
             { type: 'مضارع', root: 'فعل', pronoun: 'أنتما', form: 'تَفعَلانِ', meaning: 'شما دو نفر انجام می‌دهید/خواهید داد (مخاطب مثنی)' },
             { type: 'مضارع', root: 'فعل', pronoun: 'أنتنَّ', form: 'تَفعَلنَ', meaning: 'شما انجام می‌دهید/خواهید داد (مونث مخاطب جمع)' },
             { type: 'مضارع', root: 'فعل', pronoun: 'أنا', form: 'أفعَلُ', meaning: 'من انجام می‌دهم/خواهم داد (متکلم وحده)' },
-            { type: 'مضارع', root: 'فعل', pronoun: 'نحن', form: 'نَفعَلُ', meaning: 'ما انجام می‌دهیم/خواهیم داد (متکلم مع الغیر)' },
+            { type: 'مضارع', root: 'فعل', pronoun: 'نَحنُ', form: 'نَفعَلُ', meaning: 'ما انجام می‌دهیم/خواهیم داد (متکلم مع الغیر)' },
             // امر
             { type: 'امر', root: 'فعل', pronoun: 'أنتَ', form: 'اِفعَلْ', meaning: 'انجام بده! (مذکر مخاطب مفرد)' },
             { type: 'امر', root: 'فعل', pronoun: 'أنتما', form: 'اِفعَلاَ', meaning: 'انجام بدهید! (مخاطب مثنی)' },
@@ -279,6 +351,14 @@
         let selectedOption = null;
 
         // عناصر DOM
+        const selectionArea = document.getElementById('selection-area');
+        const quizArea = document.getElementById('quiz-area');
+        const startQuizButton = document.getElementById('start-quiz-button');
+        const checkMazy = document.getElementById('check-mazy');
+        const checkMozare = document.getElementById('check-mozare');
+        const checkAmr = document.getElementById('check-amr');
+        const checkPronoun = document.getElementById('check-pronoun');
+
         const questionText = document.getElementById('question-text');
         const answerOptionsDiv = document.getElementById('answer-options');
         const checkButton = document.getElementById('check-button');
@@ -288,58 +368,51 @@
         const progressText = document.getElementById('progress-text');
         const restartButton = document.getElementById('restart-button');
 
-        // تابع برای شروع مجدد/اولیه سازی بازی
-        function initializeGame() {
+        // تابع برای شروع آزمون پس از انتخاب گزینه‌ها
+        function startQuiz() {
             allQuestions = [];
             
-            // ایجاد سوالات صیغه
-            conjugationsData.forEach((data, index) => {
-                // سوال نوع 1: اطلاعات را بده، صیغه را بخواه
-                allQuestions.push({
-                    id: `verb-${index}-type1`,
-                    category: 'conjugation',
-                    subType: 'form_from_info',
-                    questionData: data,
-                    isCorrectlyAnswered: false // برای ردیابی پاسخ صحیح
+            if (checkMazy.checked) {
+                conjugationsData.filter(d => d.type === 'ماضی').forEach((data, index) => {
+                    allQuestions.push({ id: `mazy-${index}-type1`, category: 'conjugation', subType: 'form_from_info', questionData: data, isCorrectlyAnswered: false });
+                    allQuestions.push({ id: `mazy-${index}-type2`, category: 'conjugation', subType: 'info_from_form', questionData: data, isCorrectlyAnswered: false });
                 });
-                // سوال نوع 2: صیغه را بده، اطلاعات (نوع و ضمیر) را بخواه
-                allQuestions.push({
-                    id: `verb-${index}-type2`,
-                    category: 'conjugation',
-                    subType: 'info_from_form',
-                    questionData: data,
-                    isCorrectlyAnswered: false
+            }
+            if (checkMozare.checked) {
+                conjugationsData.filter(d => d.type === 'مضارع').forEach((data, index) => {
+                    allQuestions.push({ id: `mozare-${index}-type1`, category: 'conjugation', subType: 'form_from_info', questionData: data, isCorrectlyAnswered: false });
+                    allQuestions.push({ id: `mozare-${index}-type2`, category: 'conjugation', subType: 'info_from_form', questionData: data, isCorrectlyAnswered: false });
                 });
-            });
+            }
+            if (checkAmr.checked) {
+                conjugationsData.filter(d => d.type === 'امر').forEach((data, index) => {
+                    allQuestions.push({ id: `amr-${index}-type1`, category: 'conjugation', subType: 'form_from_info', questionData: data, isCorrectlyAnswered: false });
+                    allQuestions.push({ id: `amr-${index}-type2`, category: 'conjugation', subType: 'info_from_form', questionData: data, isCorrectlyAnswered: false });
+                });
+            }
+            if (checkPronoun.checked) {
+                pronounsData.forEach((data, index) => {
+                    allQuestions.push({ id: `pronoun-${index}-type1`, category: 'pronoun', subType: 'pronoun_from_info', questionData: data, isCorrectlyAnswered: false });
+                    allQuestions.push({ id: `pronoun-${index}-type2`, category: 'pronoun', subType: 'info_from_pronoun', questionData: data, isCorrectlyAnswered: false });
+                });
+            }
 
-            // ایجاد سوالات ضمایر
-            pronounsData.forEach((data, index) => {
-                // سوال نوع 1: معنی را بده، ضمیر را بخواه
-                allQuestions.push({
-                    id: `pronoun-${index}-type1`,
-                    category: 'pronoun',
-                    subType: 'pronoun_from_info',
-                    questionData: data,
-                    isCorrectlyAnswered: false
-                });
-                // سوال نوع 2: ضمیر را بده، معنی را بخواه
-                allQuestions.push({
-                    id: `pronoun-${index}-type2`,
-                    category: 'pronoun',
-                    subType: 'info_from_pronoun',
-                    questionData: data,
-                    isCorrectlyAnswered: false
-                });
-            });
+            if (allQuestions.length === 0) {
+                alert('لطفاً حداقل یک نوع سوال را انتخاب کنید.');
+                return;
+            }
 
-            totalUniqueQuestions = allQuestions.length; // تعداد کل سوالات برای پیشرفت
-            remainingQuestions = [...allQuestions]; // کپی از تمام سوالات برای شروع
+            totalUniqueQuestions = allQuestions.length;
+            remainingQuestions = [...allQuestions];
             correctCount = 0;
             
-            shuffleArray(remainingQuestions); // سوالات را به هم می‌ریزیم
+            shuffleArray(remainingQuestions);
             updateProgressBar();
             nextQuestion();
-            restartButton.style.display = 'none';
+
+            selectionArea.style.display = 'none';
+            quizArea.style.display = 'block';
+            questionArea.style.display = 'flex'; // نمایش بخش سوالات
         }
 
         // تابع برای به هم ریختن آرایه (برای تصادفی کردن سوالات)
@@ -367,7 +440,7 @@
             answerOptionsDiv.innerHTML = ''; // پاک کردن گزینه‌های قبلی
             selectedOption = null; // ریست کردن گزینه انتخاب شده
 
-            // فیلتر کردن سوالاتی که قبلاً درست جواب داده شده‌اند
+            // فیلتر کردن سوالاتی که هنوز درست جواب داده نشده‌اند
             const availableQuestions = remainingQuestions.filter(q => !q.isCorrectlyAnswered);
 
             if (availableQuestions.length === 0) {
@@ -390,15 +463,15 @@
             let options = [];
             let correctAnswer;
 
-            if (q.category === 'conjugation') {
+             if (q.category === 'conjugation') {
                 if (q.subType === 'form_from_info') {
                     // نوع ۱: اطلاعات را بده و صیغه را بخواه
-                    questionText.innerHTML = `<p>فعل **${q.questionData.root}**، نوع **${q.questionData.type}**، ضمیر **${q.questionData.pronoun}** را صرف کنید:</p>`;
+                    questionText.innerHTML = `<p>نوع **${q.questionData.type}**، ضمیر **${q.questionData.pronoun}** را صرف کنید:</p>`;
                     correctAnswer = q.questionData.form;
                     
-                    // ایجاد گزینه های غلط تصادفی از بین صیغه های دیگر
+                    // ایجاد گزینه های غلط تصادفی از بین صیغه های هم‌نوع یا مشابه
                     const incorrectForms = conjugationsData
-                        .filter(item => item.form !== q.questionData.form)
+                        .filter(item => item.form !== q.questionData.form && item.type === q.questionData.type) // ترجیحاً از همان نوع
                         .map(item => item.form);
                     shuffleArray(incorrectForms);
                     options = [correctAnswer, ...incorrectForms.slice(0, 3)]; // 3 گزینه غلط
@@ -418,7 +491,7 @@
             } else if (q.category === 'pronoun') {
                 if (q.subType === 'pronoun_from_info') {
                     // نوع ۱: معنی را بده، ضمیر را بخواه
-                    questionText.innerHTML = `<p>ضمیر مربوط به **"${q.questionData.meaning}"** کدام است؟</p>`;
+                    questionText.innerHTML = `<p>ضمیر مربوط به "${q.questionData.meaning}" کدام است؟</p>`;
                     correctAnswer = q.questionData.pronoun;
 
                     const incorrectPronouns = pronounsData
@@ -490,24 +563,19 @@
                 if (!currentQuestion.isCorrectlyAnswered) { // اگر برای اولین بار درست جواب داده
                     correctCount++;
                     currentQuestion.isCorrectlyAnswered = true;
-                    // سوالی که درست جواب داده شده رو دیگه به remainingQuestions برنمی گردونیم
-                    // (فقط برای نمایش در نوار پیشرفت ازش استفاده می کنیم)
                 }
             } else {
                 feedbackArea.textContent = `غلط بود. پاسخ صحیح: ${currentQuestion.correctAnswer}`;
                 feedbackArea.className = 'feedback-area incorrect';
-                currentQuestion.isCorrectlyAnswered = false; // اگر غلط بود، مطمئن میشیم که این سوال هنوز "درست پاسخ داده نشده" است
-                // و چون از `remainingQuestions` فیلتر نمی شود، در دورهای بعدی دوباره ظاهر خواهد شد
+                currentQuestion.isCorrectlyAnswered = false; 
             }
             
             updateProgressBar();
             checkButton.style.display = 'none';
             nextButton.style.display = 'inline-block';
 
-            // اگر تمام سوالات (آنهایی که isCorrectlyAnswered === false نیستند) تمام شده باشند
             const availableQuestions = remainingQuestions.filter(q => !q.isCorrectlyAnswered);
             if (availableQuestions.length === 0) {
-                // اگر همه سوالات درست پاسخ داده شده اند
                 questionText.textContent = 'تبریک! شما تمام سوالات را پاسخ دادید!';
                 nextButton.style.display = 'none';
                 restartButton.style.display = 'inline-block';
@@ -516,12 +584,18 @@
 
 
         // رویدادها
+        startQuizButton.addEventListener('click', startQuiz);
         checkButton.addEventListener('click', checkAnswer);
         nextButton.addEventListener('click', nextQuestion);
-        restartButton.addEventListener('click', initializeGame);
+        restartButton.addEventListener('click', () => {
+            quizArea.style.display = 'none'; // مخفی کردن بخش آزمون
+            questionArea.style.display = 'none'; // مخفی کردن سوالات
+            selectionArea.style.display = 'block'; // نمایش بخش انتخاب
+            // نیازی به initializeGame نیست چون startQuiz همه چیز رو ریست می‌کنه
+        });
 
-        // شروع بازی هنگام بارگذاری صفحه
-        initializeGame();
+        // اولین بار، تنها بخش انتخاب سوالات نمایش داده می‌شود
+        // initializeGame(); // این خط را حذف می‌کنیم چون حالا با دکمه شروع آزمون آغاز می‌شود
     </script>
 </body>
 </html>
