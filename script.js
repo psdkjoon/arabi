@@ -32,10 +32,10 @@ const conjugationsData = [
     { type: 'مضارع', root: 'فعل', pronoun: 'نحن', form: 'نَفعَلُ', meaning: 'ما انجام می‌دهیم/خواهیم داد (متکلم مع الغیر)' },
     // Imperative (امر)
     { type: 'امر', root: 'فعل', pronoun: 'أنتَ', form: 'اِفعَلْ', meaning: 'انجام بده! (مذکر مخاطب مفرد)' },
-    { type: 'امر', root: 'فعل', pronoun: 'أنتما', form: 'اِفعَلاَ', meaning: 'انجام بدهید! (مخاطب مثنی)' },
+    { type: 'امر', root: 'فعل', pronoun: 'أنتما', form: 'اِفعَلاَ', meaning: 'انجام بدهید! (خاطب مثنی)' },
     { type: 'امر', root: 'فعل', pronoun: 'أنتم', form: 'اِفعَلُوا', meaning: 'انجام بدهید! (مذکر مخاطب جمع)' },
     { type: 'امر', root: 'فعل', pronoun: 'أنتِ', form: 'اِفعَلی', meaning: 'انجام بده! (مونث مخاطب مفرد)' },
-    { type: 'امر', root: 'فعل', pronoun: 'أنتما', form: 'اِفعَلاَ', meaning: 'انجام بدهید! (مخاطب مثنی)' },
+    { type: 'امر', root: 'فعل', pronoun: 'أنتما', form: 'اِفعَلاَ', meaning: 'انجام بدهید! (خاطب مثنی)' },
     { type: 'امر', root: 'فعل', pronoun: 'أنتنَّ', form: 'اِفعَلْنَ', meaning: 'انجام بدهید! (مونث مخاطب جمع)' }
 ];
 
@@ -50,7 +50,7 @@ const pronounsData = [
     { pronoun: 'أنتما', meaning: 'شما دو نفر (مخاطب مثنی)' },
     { pronoun: 'أنتم', meaning: 'شما (مذکر مخاطب جمع)' },
     { pronoun: 'أنتِ', meaning: 'تو (مونث مخاطب مفرد)' },
-    { pronoun: 'أنتما', meaning: 'شما دو نفر (مخاطب مثنی)' },
+    { pronoun: 'أنتما', meaning: 'شما دو نفر (مونث مخاطب مثنی)' },
     { pronoun: 'أنتنَّ', meaning: 'شما (مونث مخاطب جمع)' },
     { pronoun: 'أنا', meaning: 'من (متکلم وحده)' },
     { pronoun: 'نحن', meaning: 'ما (متکلم مع الغیر)' }
