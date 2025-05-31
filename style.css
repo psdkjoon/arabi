@@ -146,6 +146,7 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Apply Amiri to buttons */
 }
 
 .option-button:hover {
@@ -172,6 +173,7 @@ h1 {
     font-size: 1.3em; /* Larger button text */
     transition: background-color 0.3s ease;
     margin: 8px; /* More margin */
+    font-family: 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Apply Amiri to general buttons */
 }
 
 .button:hover {
@@ -217,10 +219,13 @@ h1 {
     color: #f44336;
 }
 
+/* Ensure Arabic text within questions displays diacritics correctly */
 .arabic-text {
     font-size: 2.2em; /* Even larger for direct Arabic text */
     font-weight: bold;
     color: #FFD700;
+    /* This property is crucial for displaying diacritics */
+    text-rendering: optimizeLegibility; 
 }
 
 .answer-highlight {
